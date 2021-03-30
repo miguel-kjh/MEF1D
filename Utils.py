@@ -7,5 +7,5 @@ shape_functions = [
 ]
 
 #Gauss integration data
-gauss_points = [-0.57735, 0.57735]
-weigths = [1, 1]
+gauss_points = [0, -0.538469, 0.538469, -0.90618, 0.90618]
+weigths = [0.568889, 0.568889, 0.478629, 0.478629, 0.236927, 0.236927]
