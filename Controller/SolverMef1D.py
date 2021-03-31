@@ -7,10 +7,12 @@ class SolverMef1D:
 
     def __init__(self, mesh: Mesh, func, neumann_cond: list = [None,None], dirichlet_cond: list = [None,None]):
         self.number_nodes = mesh.nodes_number
+        self.mesh = mesh
         self.global_matrix = self._build_global_matrix(mesh)
         self.elementary_vector = self._build_elementary_vector(mesh, func)
         self._apply_neumann_cond(neumann_cond)
         self._apply_dirichlet_cond(dirichlet_cond)
+        self.solution = np.linalg.solve(self.global_matrix, self.elementary_vector)
         #np.set_printoptions(precision=3)
         #print(self.global_matrix)
         #print(self.elementary_vector)
@@ -26,7 +28,6 @@ class SolverMef1D:
                                                                 * node_j.shape_function_derivative(gauss_point) * 1/6
         return global_matrix
 
-    # Tener en consideranción el intrevalo [a,b]
     def _build_elementary_vector(self, mesh: Mesh, func) -> np.array:
         fg = np.zeros(self.number_nodes)
         for element in range(mesh.elements_number):
@@ -43,12 +44,20 @@ class SolverMef1D:
 
     def _apply_dirichlet_cond(self, dirichlet_cond):
         if dirichlet_cond[0] is not None:
-            self.global_matrix[0][0] = G
+            self.global_matrix[0][0]  = G
             self.elementary_vector[0] = G*dirichlet_cond[0]
 
         if dirichlet_cond[1] is not None:
             self.global_matrix[-1][-1] = G
             self.elementary_vector[-1] = G*dirichlet_cond[1]
 
-    def solver_mef(self):
-        return np.linalg.solve(self.global_matrix, self.elementary_vector)
+    def solver_mef(self, x):
+        result = 0
+        points = self.mesh.get_points()
+        for i in range(len(self.solution)):
+            fi = 1
+            for j in range(len(points)):
+                if i != j:
+                    fi *= (x - points[j]) / (points[i] - points[j])
+            result += self.solution[i] * fi
+        return result

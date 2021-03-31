@@ -2,8 +2,17 @@ from Domain.Node import Node
 from Utils import shape_function, shape_function_derivative
 import numpy as np
 
-# Hacer que más de un nodo tenga el mismo ID
 class Mesh:
+
+    def __init__(self, elements_number: int, a: int = 0, b: int = 1):
+        assert elements_number > 1
+        assert a < b
+
+        self.elements_number = elements_number
+        self.interval = np.arange(a, b, (b-a)/self.elements_number)
+        self.interval = np.append(self.interval, b)
+        self.nodes = []
+        self._build_mesh()
 
     def _build_mesh(self):
         id = 0
@@ -16,12 +25,13 @@ class Mesh:
             self.nodes.append(Node(id, element, shape_function[2], shape_function_derivative[2], sub_interval))
         self.nodes_number = id + 1
 
-    def __init__(self, elements_number: int, a: int = 0, b: int = 1):
-        self.elements_number = elements_number
-        self.interval = np.arange(a, b, (b-a)/self.elements_number)
-        self.interval = np.append(self.interval, b)
-        self.nodes = []
-        self._build_mesh()
-
     def get_nodes_of_element(self, element: int):
         return [node for node in self.nodes if element == node.element]
+
+    def get_points(self):
+        interval = []
+        for i in range(len(self.interval) - 1):
+            interval.append(self.interval[i])
+            interval.append((self.interval[i+1] - self.interval[i])/2 + self.interval[i])
+        interval.append(self.interval[-1])
+        return interval
