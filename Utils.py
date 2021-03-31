@@ -15,3 +15,6 @@ shape_function = [
 #Gauss integration data
 gauss_points = [-0.57735, 0.57735] #[0, -0.538469, 0.538469, -0.90618, 0.90618]
 weigths = [1,1] #[0.568889, 0.568889, 0.478629, 0.478629, 0.236927, 0.236927]
+
+#Big Numbre for Directh conditions
+G = 10e8

@@ -1,8 +1,20 @@
 import numpy as np
 from Domain.Mesh import Mesh
-from Utils import gauss_points, weigths
+from Utils import gauss_points, weigths, G
+
 
 class SolverMef1D:
+
+    def __init__(self, mesh: Mesh, func, neumann_cond: list = [None,None], dirichlet_cond: list = [None,None]):
+        self.number_nodes = mesh.nodes_number
+        self.global_matrix = self._build_global_matrix(mesh)
+        self.elementary_vector = self._build_elementary_vector(mesh, func)
+        self._apply_neumann_cond(neumann_cond)
+        self._apply_dirichlet_cond(dirichlet_cond)
+        #np.set_printoptions(precision=3)
+        #print(self.global_matrix)
+        #print(self.elementary_vector)
+
     def _build_global_matrix(self, mesh: Mesh) -> np.array:
         global_matrix = np.zeros([self.number_nodes, self.number_nodes])
         for element in range(mesh.elements_number):
@@ -23,16 +35,20 @@ class SolverMef1D:
                 for gauss_point, weight in zip(gauss_points, weigths):
                     fg[node_i.id] += weight * node_i.shape_function(gauss_point) \
                                      * func((gauss_point + 3*sum(node_i.interval))/6) * 1/6
-                print(node_i,fg)
         return fg
 
-    def __init__(self, mesh: Mesh, func):
-        self.number_nodes = mesh.nodes_number
-        self.global_matrix = self._build_global_matrix(mesh)
-        self.elementary_vector = self._build_elementary_vector(mesh, func)
-        np.set_printoptions(precision=3)
-        print(self.global_matrix)
-        print(self.elementary_vector)
+    def _apply_neumann_cond(self, neumann_cond):
+        self.elementary_vector[0] -= neumann_cond[0] if neumann_cond[0] is not None else 0
+        self.elementary_vector[-1] -= neumann_cond[1] if neumann_cond[1] is not None else 0
+
+    def _apply_dirichlet_cond(self, dirichlet_cond):
+        if dirichlet_cond[0] is not None:
+            self.global_matrix[0][0] = G
+            self.elementary_vector[0] = G*dirichlet_cond[0]
+
+        if dirichlet_cond[1] is not None:
+            self.global_matrix[-1][-1] = G
+            self.elementary_vector[-1] = G*dirichlet_cond[1]
 
     def solver_mef(self):
         return np.linalg.solve(self.global_matrix, self.elementary_vector)
