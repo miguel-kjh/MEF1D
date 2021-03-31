@@ -1,1 +1,2 @@
-# MEF1D
+# finite element methods
+
