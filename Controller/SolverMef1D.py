@@ -10,10 +10,11 @@ class SolverMef1D:
             for node_i in nodes:
                 for node_j in nodes:
                     for gauss_point, weight in zip(gauss_points, weigths):
-                        global_matrix[node_i.id, node_j.id]  += weight * node_i.shape_function(gauss_point) \
-                                                                * node_j.shape_function(gauss_point) * 1/self.number_nodes
+                        global_matrix[node_i.id, node_j.id]  += weight * node_i.shape_function_derivative(gauss_point) \
+                                                                * node_j.shape_function_derivative(gauss_point) * 1/6
         return global_matrix
 
+    # Tener en consideranción el intrevalo [a,b]
     def _build_elementary_vector(self, mesh: Mesh, func) -> np.array:
         fg = np.zeros(self.number_nodes)
         for element in range(mesh.elements_number):
@@ -21,7 +22,8 @@ class SolverMef1D:
             for node_i in nodes:
                 for gauss_point, weight in zip(gauss_points, weigths):
                     fg[node_i.id] += weight * node_i.shape_function(gauss_point) \
-                                     * func(gauss_point)
+                                     * func((gauss_point + 3*sum(node_i.interval))/6) * 1/6
+                print(node_i,fg)
         return fg
 
     def __init__(self, mesh: Mesh, func):
