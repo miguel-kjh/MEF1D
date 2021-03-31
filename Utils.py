@@ -18,3 +18,4 @@ weigths = [1,1] #[0.568889, 0.568889, 0.478629, 0.478629, 0.236927, 0.236927]
 
 #Big Numbre for Directh conditions
 G = 10e8
+FACTOR = 1/6

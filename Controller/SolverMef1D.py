@@ -1,6 +1,6 @@
 import numpy as np
 from Domain.Mesh import Mesh
-from Utils import gauss_points, weigths, G
+from Utils import gauss_points, weigths, G, FACTOR
 
 
 class SolverMef1D:
@@ -13,9 +13,6 @@ class SolverMef1D:
         self._apply_neumann_cond(neumann_cond)
         self._apply_dirichlet_cond(dirichlet_cond)
         self.solution = np.linalg.solve(self.global_matrix, self.elementary_vector)
-        #np.set_printoptions(precision=3)
-        #print(self.global_matrix)
-        #print(self.elementary_vector)
 
     def _build_global_matrix(self, mesh: Mesh) -> np.array:
         global_matrix = np.zeros([self.number_nodes, self.number_nodes])
@@ -24,8 +21,8 @@ class SolverMef1D:
             for node_i in nodes:
                 for node_j in nodes:
                     for gauss_point, weight in zip(gauss_points, weigths):
-                        global_matrix[node_i.id, node_j.id]  += weight * node_i.shape_function_derivative(gauss_point) \
-                                                                * node_j.shape_function_derivative(gauss_point) * 1/6
+                        global_matrix[node_i.id, node_j.id] += weight * node_i.shape_function_derivative(gauss_point) \
+                                                                * node_j.shape_function_derivative(gauss_point) * FACTOR
         return global_matrix
 
     def _build_elementary_vector(self, mesh: Mesh, func) -> np.array:
@@ -35,7 +32,7 @@ class SolverMef1D:
             for node_i in nodes:
                 for gauss_point, weight in zip(gauss_points, weigths):
                     fg[node_i.id] += weight * node_i.shape_function(gauss_point) \
-                                     * func((gauss_point + 3*sum(node_i.interval))/6) * 1/6
+                                     * func((gauss_point + 3*sum(node_i.interval))* FACTOR) * FACTOR
         return fg
 
     def _apply_neumann_cond(self, neumann_cond):
@@ -51,7 +48,7 @@ class SolverMef1D:
             self.global_matrix[-1][-1] = G
             self.elementary_vector[-1] = G*dirichlet_cond[1]
 
-    def solver_mef(self, x):
+    def solver_mef(self, x) -> float:
         result = 0
         points = self.mesh.get_points()
         for i in range(len(self.solution)):

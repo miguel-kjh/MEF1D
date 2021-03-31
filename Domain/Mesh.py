@@ -25,10 +25,10 @@ class Mesh:
             self.nodes.append(Node(id, element, shape_function[2], shape_function_derivative[2], sub_interval))
         self.nodes_number = id + 1
 
-    def get_nodes_of_element(self, element: int):
+    def get_nodes_of_element(self, element: int) -> list:
         return [node for node in self.nodes if element == node.element]
 
-    def get_points(self):
+    def get_points(self) -> list:
         interval = []
         for i in range(len(self.interval) - 1):
             interval.append(self.interval[i])
