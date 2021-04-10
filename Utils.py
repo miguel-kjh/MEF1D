@@ -1,9 +1,9 @@
 
 # Shape functions
 shape_function_derivative = [
-    lambda chi: 3*(2*chi - 1),
-    lambda chi: -12*chi,
-    lambda chi: 3*(2*chi + 1),
+    lambda chi: (2*chi - 1)/2,
+    lambda chi: -2*chi,
+    lambda chi: (2*chi + 1)/2,
 ]
 
 shape_function = [

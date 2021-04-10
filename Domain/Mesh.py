@@ -9,7 +9,8 @@ class Mesh:
         assert a < b
 
         self.elements_number = elements_number
-        self.interval = np.arange(a, b, (b-a)/self.elements_number)
+        self.he = (b-a)/self.elements_number
+        self.interval = np.arange(a, b, self.he)
         self.interval = np.append(self.interval, b)
         self.nodes = []
         self._build_mesh()

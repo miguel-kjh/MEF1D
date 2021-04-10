@@ -7,12 +7,20 @@ class SolverMef1D:
 
     def __init__(self, mesh: Mesh, func, neumann_cond: list = [None,None], dirichlet_cond: list = [None,None]):
         self.number_nodes = mesh.nodes_number
+        self.jacobiano = 1 / 2 * mesh.he
+        self.jacobiano_inv = 1/self.jacobiano
         self.mesh = mesh
         self.global_matrix = self._build_global_matrix(mesh)
         self.elementary_vector = self._build_elementary_vector(mesh, func)
         self._apply_neumann_cond(neumann_cond)
         self._apply_dirichlet_cond(dirichlet_cond)
         self.solution = np.linalg.solve(self.global_matrix, self.elementary_vector)
+
+        #np.set_printoptions(precision=3)
+        """print("Matrix global")
+        print(self.global_matrix)
+        print(self.elementary_vector)
+        print(self.solution)"""
 
     def _build_global_matrix(self, mesh: Mesh) -> np.array:
         global_matrix = np.zeros([self.number_nodes, self.number_nodes])
@@ -21,8 +29,8 @@ class SolverMef1D:
             for node_i in nodes:
                 for node_j in nodes:
                     for gauss_point, weight in zip(gauss_points, weigths):
-                        global_matrix[node_i.id, node_j.id] += weight * node_i.shape_function_derivative(gauss_point) \
-                                                                * node_j.shape_function_derivative(gauss_point) * FACTOR
+                        global_matrix[node_i.id, node_j.id] += weight * self.jacobiano_inv * node_i.shape_function_derivative(gauss_point) \
+                                                                * self.jacobiano_inv * node_j.shape_function_derivative(gauss_point) * self.jacobiano
         return global_matrix
 
     def _build_elementary_vector(self, mesh: Mesh, func) -> np.array:
@@ -32,7 +40,7 @@ class SolverMef1D:
             for node_i in nodes:
                 for gauss_point, weight in zip(gauss_points, weigths):
                     fg[node_i.id] += weight * node_i.shape_function(gauss_point) \
-                                     * func((gauss_point + 3*sum(node_i.interval))* FACTOR) * FACTOR
+                                     * func((mesh.he*gauss_point + sum(node_i.interval))/2) * self.jacobiano
         return fg
 
     def _apply_neumann_cond(self, neumann_cond):
