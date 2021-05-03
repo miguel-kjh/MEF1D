@@ -3,6 +3,9 @@ from Utils import shape_function, shape_function_derivative
 import numpy as np
 
 class Mesh:
+    """
+    Construye la malla en 1D
+    """
 
     def __init__(self, elements_number: int, a: int = 0, b: int = 1):
         assert elements_number > 1

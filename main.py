@@ -5,10 +5,10 @@ import numpy as np
 
 elements = 3
 #k = 205
-function = lambda x: np.sin(np.pi*x) #np.exp(-k*(x-5)**2)#1 - pow(x,2) #np.exp(-k*(x-5)**2)
+function = lambda x: 1 - pow(x,2) #np.sin(np.pi*x) #1 - pow(x,2) #np.exp(-k*(x-5)**2)
 solution = None#lambda x: np.sin(np.pi*x)/np.pi**2
 n_cond = [None, None]
-d_cond = [0, 0] #[0, 0]
+d_cond = [0, 1] #[0, 0]
 interval = [0, 1] #[0, 10]
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 
-# Shape functions
+# Funciones de forma cuadradas
 shape_function_derivative = [
     lambda chi: (2*chi - 1)/2,
     lambda chi: -2*chi,
@@ -12,10 +12,9 @@ shape_function = [
     lambda chi: 1/2*chi*(chi + 1),
 ]
 
-#Gauss integration data
-gauss_points = [-0.57735, 0.57735] #[0, -0.538469, 0.538469, -0.90618, 0.90618]
-weigths = [1,1] #[0.568889, 0.568889, 0.478629, 0.478629, 0.236927, 0.236927]
+#Datos necesarios para la integración con el método de Gausse
+gauss_points = [-0.57735, 0.57735]
+weigths = [1,1]
 
-#Big Numbre for Directh conditions
+#Número grande para las condiciones de Dirichlet
 G = 10e8
-FACTOR = 1/6

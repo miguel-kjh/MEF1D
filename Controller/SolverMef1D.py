@@ -1,6 +1,6 @@
 import numpy as np
 from Domain.Mesh import Mesh
-from Utils import gauss_points, weigths, G, FACTOR
+from Utils import gauss_points, weigths, G
 
 
 class SolverMef1D:
