@@ -3,7 +3,8 @@ from Controller.SolverMef1D import SolverMef1D
 import numpy as np
 
 class SolutionView:
-    """n: int, a: int = 0, b: int = 1"""
+    """Clase para printear las soluciones obtenidas por el MEF"""
+
     def __init__(self, n: int, a: int = 0, b: int = 1):
         self.X = np.arange(a, b, (b-a)/n)
         self.X = np.append(self.X, b)
