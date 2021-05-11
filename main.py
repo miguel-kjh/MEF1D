@@ -3,13 +3,17 @@ from Controller.SolverMef1D import SolverMef1D
 from View.SolutionView import SolutionView
 import numpy as np
 
+# Números de elementos
 elements = 3
-#k = 205
-function = lambda x: 1 - pow(x,2) #np.sin(np.pi*x) #1 - pow(x,2) #np.exp(-k*(x-5)**2)
-solution = None#lambda x: np.sin(np.pi*x)/np.pi**2
+# Función del lado derecho de la ecuación de poisson
+function = lambda x: 1 - pow(x,2)
+# Solución para comprobar el resultado, se puede poner a None si se desconoce
+solution = lambda x: (pow(x,4)/12) - (pow(x,2)/2) + x - 7/12
+#Condiciones de contorno
 n_cond = [1, None]
-d_cond = [None, 0] #[0, 0]
-interval = [0, 1] #[0, 10]
+d_cond = [None, 0]
+#Intervalo
+interval = [0, 1]
 
 if __name__ == '__main__':
     m    = Mesh(elements, a=interval[0], b=interval[1])

@@ -11,10 +11,11 @@ class SolutionView:
 
     def view(self, solver: SolverMef1D, solution = None):
         y = [solver.solver_mef(x) for x in self.X]
-        plt.plot(self.X, y)
+        plt.plot(self.X, y, label = "FEM solution")
         if solution:
-            plt.plot(self.X, [solution(x) for x in self.X])
+            plt.plot(self.X, [solution(x) for x in self.X], label = "Real solution")
         plt.title("FEM Solution")
         plt.ylabel('U(x)')
         plt.xlabel('x')
+        plt.legend()
         plt.show()
