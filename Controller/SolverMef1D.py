@@ -6,7 +6,7 @@ from Utils import gauss_points, weigths, G
 class SolverMef1D:
 
     def __init__(self, mesh: Mesh, func, neumann_cond: list = [None,None],
-                 dirichlet_cond: list = [None,None], verbose: bool = True):
+                 dirichlet_cond: list = [None,None], verbose: bool = False):
 
         # datos para resolver el MEF
         self.number_nodes = mesh.nodes_number
