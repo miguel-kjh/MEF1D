@@ -1,5 +1,6 @@
 # Código de elmentos finitos
 
+Este programa está adaptado para resolver diferentes variantes de la ecuación de poisson en 1D,para ello se emplea el método de elementos finitos con funciones de formas cuadradas.
 Para compilar y ejecutar este código hace falta tener *python3* con las librerías de *numpy* 
 y *matlplotlib* instaladas.
 
