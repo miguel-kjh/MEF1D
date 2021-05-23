@@ -21,7 +21,7 @@ class Mesh:
 
     def _build_mesh(self):
         """
-        Construye la malla,añade tres nodos a cada elementos porque usamos basas cuadradas
+        Construye la malla, añade tres nodos a cada elementos porque usamos bases cuadradas
         :return:
         """
         id = 0
