@@ -48,14 +48,14 @@ class SolverMef1D:
                     for gauss_point, weight in zip(gauss_points, weigths):
                         # Se utiliza el id para hacer el ensamblaje
                         global_matrix[node_i.id, node_j.id] += weight * self.jacobiano_inv * node_i.shape_function_derivative(gauss_point) \
-                                                                * self.jacobiano_inv * node_j.shape_function_derivative(gauss_point) * self.jacobiano
+                                                                * node_j.shape_function_derivative(gauss_point)
         return global_matrix
 
     def _build_elementary_vector(self, mesh: Mesh, func) -> np.array:
         """
         Construye el vector elemental
         :param mesh: Mesh
-        :param func: Función de forma
+        :param func: función
         :return: np.array
         """
         fg = np.zeros(self.number_nodes)
