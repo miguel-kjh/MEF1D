@@ -4,6 +4,10 @@ from Utils import gauss_points, weigths, G
 
 class SolverMef1D:
 
+    def _check_boundary_conditions(self, dirichlet_cond) -> bool:
+        return dirichlet_cond[0] != None or dirichlet_cond[1] != None
+
+
     def __init__(self, mesh: Mesh, func, neumann_cond: list = [None,None],
                  dirichlet_cond: list = [None,None], verbose: bool = False):
 
