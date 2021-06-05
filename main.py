@@ -10,8 +10,8 @@ function = lambda x: 1 - pow(x,2)
 # Solución para comprobar el resultado, se puede poner a None si se desconoce
 solution = lambda x: (pow(x,4)/12) - (pow(x,2)/2) + x - 7/12
 #Condiciones de contorno
-n_cond = [None, None]
-d_cond = [None, 1]
+n_cond = [1, None]
+d_cond = [None, 0]
 #Intervalo
 interval = [0, 1]
 
