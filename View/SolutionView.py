@@ -5,7 +5,7 @@ import numpy as np
 class SolutionView:
     """Clase para printear las soluciones obtenidas por el MEF"""
 
-    def __init__(self, n: int, a: int = 0, b: int = 1):
+    def __init__(self, a: int = 0, b: int = 1, n: int = 40):
         self.X = np.arange(a, b, (b-a)/n)
         self.X = np.append(self.X, b)
 

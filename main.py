@@ -18,6 +18,6 @@ interval = [0, 1]
 if __name__ == '__main__':
     m    = Mesh(elements, a=interval[0], b=interval[1])
     m_g  = SolverMef1D(m, function, neumann_cond=n_cond, dirichlet_cond=d_cond)
-    view = SolutionView(40,a=interval[0], b=interval[1])
+    view = SolutionView(a=interval[0], b=interval[1])
     view.view(m_g, solution=solution)
 
