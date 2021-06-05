@@ -18,4 +18,5 @@ class SolutionView:
         plt.ylabel('U(x)')
         plt.xlabel('x')
         plt.legend()
+        plt.grid()
         plt.show()
